@@ -1,4 +1,4 @@
-﻿#  AI Photo Booth - Versión Web
+﻿# AI Photo Booth - Versión Web
 
 <div align="center">
 
@@ -12,24 +12,26 @@
 Transforma tus fotos con IA usando Google Gemini 2.5 Flash Image  
 Compatible con cualquier dispositivo con cámara web
 
-[Demo](#instalación)  [Documentación](#características)  [Reportar Bug](https://github.com/matecode/ai-photo-booth-web/issues)
+[Demo](#instalación) [Documentación](#características) [Reportar Bug](https://github.com/matecode/ai-photo-booth-web/issues)
 
 </div>
 
 ---
 
-##  Seguridad de API Keys
+## Seguridad de API Keys
 
- **IMPORTANTE**: Este proyecto requiere API keys que **NO deben** estar en el código público.
+**IMPORTANTE**: Este proyecto requiere API keys que **NO deben** estar en el código público.
 
 ### Configuración Segura
 
 1. **Copia el archivo de ejemplo:**
+
    ```bash
    cp .env.example .env.local
    ```
 
 2. **Edita `.env.local` con tus claves:**
+
    ```env
    VITE_GEMINI_API_KEY=tu_clave_real_aqui
    VITE_IMGBB_API_KEY=tu_clave_opcional_aqui
@@ -44,40 +46,40 @@ Compatible con cualquier dispositivo con cámara web
 
 ---
 
-##  Características
+## Características
 
-###  8 Escenarios Preconfigurados
+### 8 Escenarios Preconfigurados
 
--  **Con Messi** - Selfie con el mejor jugador del mundo
--  **Con Taylor Swift** - En el Eras Tour
--  **Elvis Presley** - Retro en Las Vegas
--  **Con Trump** - En la Casa Blanca
--  **Harry Potter** - Magia en Hogwarts
--  **Darth Vader** - Star Wars épico
--  **Se Busca** - Póster del Lejano Oeste
--  **Astronautas** - Misión a Marte
+- **Con Messi** - Selfie con el mejor jugador del mundo
+- **Con Taylor Swift** - En el Eras Tour
+- **Elvis Presley** - Retro en Las Vegas
+- **Con Trump** - En la Casa Blanca
+- **Harry Potter** - Magia en Hogwarts
+- **Darth Vader** - Star Wars épico
+- **Se Busca** - Póster del Lejano Oeste
+- **Astronautas** - Misión a Marte
 
-###  6 Estilos Artísticos
+### 6 Estilos Artísticos
 
--  **Fotorealista** - Ultra realista y detallado
--  **Cómic** - Estilo viñeta de cómic
--  **Anime** - Estilo japonés colorido
--  **Óleo** - Pintura clásica artística
--  **Cyberpunk** - Neón futurista
--  **3D Cartoon** - Animación 3D Pixar
+- **Fotorealista** - Ultra realista y detallado
+- **Cómic** - Estilo viñeta de cómic
+- **Anime** - Estilo japonés colorido
+- **Óleo** - Pintura clásica artística
+- **Cyberpunk** - Neón futurista
+- **3D Cartoon** - Animación 3D Pixar
 
-###  Funcionalidades
+### Funcionalidades
 
--  **Cámara web integrada**
--  **Upload de archivos**
--  **Descarga directa de imágenes**
--  **Código QR para compartir**
--  **UI moderna y responsiva**
--  **Deploy a Netlify fácil**
+- **Cámara web integrada**
+- **Upload de archivos**
+- **Descarga directa de imágenes**
+- **Código QR para compartir**
+- **UI moderna y responsiva**
+- **Deploy a Netlify fácil**
 
 ---
 
-##  Instalación
+## Instalación
 
 ### Requisitos
 
@@ -103,7 +105,7 @@ La app estará en: http://localhost:3000
 
 ---
 
-##  Deploy a Netlify
+## Deploy a Netlify
 
 ### Método 1: Desde la UI de Netlify
 
@@ -122,9 +124,9 @@ npm run build
 netlify deploy --prod
 ```
 
-###  Variables de Entorno en Netlify
+### Variables de Entorno en Netlify
 
-**Site Settings  Environment Variables:**
+**Site Settings Environment Variables:**
 
 ```
 VITE_GEMINI_API_KEY = AIza...tu_clave
@@ -133,24 +135,24 @@ VITE_IMGBB_API_KEY = opcional
 
 ---
 
-##  Tecnologías
+## Tecnologías
 
-| Tecnología | Versión | Propósito |
-|-----------|---------|-----------|
-| **React** | 19.2.0 | UI Framework |
-| **TypeScript** | 5.8.2 | Type safety |
-| **Vite** | 6.2.0 | Build tool |
+| Tecnología           | Versión   | Propósito        |
+| -------------------- | --------- | ---------------- |
+| **React**            | 19.2.0    | UI Framework     |
+| **TypeScript**       | 5.8.2     | Type safety      |
+| **Vite**             | 6.2.0     | Build tool       |
 | **Google Gemini AI** | 2.5 Flash | Image generation |
-| **Tailwind CSS** | - | Styling (CDN) |
-| **ImgBB API** | - | Image hosting |
+| **Tailwind CSS**     | -         | Styling (CDN)    |
+| **ImgBB API**        | -         | Image hosting    |
 
 ---
 
-##  Autor
+## Autor
 
 <div align="center">
 
-###  Hecho con amor por **Mate Code**
+### Hecho con amor por **Mate Code**
 
 **Fecha de creación:** Noviembre 2025  
 **Última actualización:** 21 de Noviembre de 2025
@@ -159,18 +161,18 @@ VITE_IMGBB_API_KEY = opcional
 
 ---
 
-##  Licencia
+## Licencia
 
 MIT License - Copyright (c) 2025 Mate Code
 
 ---
 
-##  Soporte
+## Soporte
 
 ¿Problemas con las API keys o la configuración?
 
--  [Reportar Bug](https://github.com/matecode/ai-photo-booth-web/issues)
--  [Solicitar Feature](https://github.com/matecode/ai-photo-booth-web/issues/new)
+- [Reportar Bug](https://github.com/matecode/ai-photo-booth-web/issues)
+- [Solicitar Feature](https://github.com/matecode/ai-photo-booth-web/issues/new)
 
 ---
 
@@ -178,6 +180,6 @@ MIT License - Copyright (c) 2025 Mate Code
 
 ** Si te gusta este proyecto, dale una estrella en GitHub **
 
-Made with  by Mate Code |  2025
+Made with by Mate Code | 2025
 
 </div>

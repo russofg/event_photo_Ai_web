@@ -428,7 +428,7 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 py-3 text-white text-center shadow-lg z-20">
+      <footer className="fixed bottom-0 left-0 right-0  py-3 text-white text-center shadow-lg z-20">
         <div className="flex items-center justify-center gap-2 text-sm font-medium">
           <span>Hecho con amor</span>
           <span

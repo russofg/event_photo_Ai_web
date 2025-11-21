@@ -27,7 +27,8 @@ export const uploadToImgBB = async (
     }
 
     // API Key de ImgBB desde variables de entorno
-    const API_KEY = import.meta.env.VITE_IMGBB_API_KEY || "d2a164a18ca7b393d6a27aefebb479da";
+    const API_KEY =
+      import.meta.env.VITE_IMGBB_API_KEY || "d2a164a18ca7b393d6a27aefebb479da";
 
     // Crear FormData
     const formData = new FormData();
