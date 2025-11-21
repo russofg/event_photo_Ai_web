@@ -182,12 +182,12 @@ const App: React.FC = () => {
 
   const handleDownload = async () => {
     const selectedImage = generatedImages[selectedImageIndex];
-    
+
     try {
       // Convertir base64 a blob
       const response = await fetch(selectedImage);
       const blob = await response.blob();
-      
+
       // Crear URL temporal
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -195,14 +195,14 @@ const App: React.FC = () => {
       link.download = `ai-photo-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
-      
+
       // Limpiar
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error al descargar:", error);
       // Fallback: abrir en nueva pestaña en móviles
-      window.open(selectedImage, '_blank');
+      window.open(selectedImage, "_blank");
     }
   };
 
