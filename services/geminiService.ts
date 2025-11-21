@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { ART_STYLES } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 /**
  * Converts a File object to a Base64 string suitable for the Gemini API.
@@ -34,7 +34,7 @@ export const generateEditedImageVariations = async (
   styleId: string
 ): Promise<string[]> => {
   console.log("🔧 geminiService: Iniciando generación");
-  console.log("API Key disponible:", !!process.env.API_KEY);
+  console.log("API Key disponible:", !!import.meta.env.VITE_GEMINI_API_KEY);
 
   try {
     console.log("📸 Convirtiendo imagen a base64...");

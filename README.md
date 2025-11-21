@@ -31,8 +31,8 @@ Compatible con cualquier dispositivo con cámara web
 
 2. **Edita `.env.local` con tus claves:**
    ```env
-   GEMINI_API_KEY=tu_clave_real_aqui
-   IMGBB_API_KEY=tu_clave_opcional_aqui
+   VITE_GEMINI_API_KEY=tu_clave_real_aqui
+   VITE_IMGBB_API_KEY=tu_clave_opcional_aqui
    ```
 
 3. **¡NUNCA subas `.env.local` a Git!** (Ya está en `.gitignore`)
@@ -110,8 +110,8 @@ La app estará en: http://localhost:3000
 1. Sube el repo a GitHub
 2. Conecta Netlify con tu repositorio
 3. **Configura las variables de entorno en Netlify:**
-   - `GEMINI_API_KEY` = tu_clave_gemini
-   - `IMGBB_API_KEY` = tu_clave_imgbb (opcional)
+   - `VITE_GEMINI_API_KEY` = tu_clave_gemini
+   - `VITE_IMGBB_API_KEY` = tu_clave_imgbb (opcional)
 4. Build command: `npm run build`
 5. Publish directory: `dist`
 
@@ -127,8 +127,8 @@ netlify deploy --prod
 **Site Settings  Environment Variables:**
 
 ```
-GEMINI_API_KEY = AIza...tu_clave
-IMGBB_API_KEY = opcional
+VITE_GEMINI_API_KEY = AIza...tu_clave
+VITE_IMGBB_API_KEY = opcional
 ```
 
 ---

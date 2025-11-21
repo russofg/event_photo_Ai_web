@@ -10,10 +10,6 @@ export default defineConfig(({ mode }) => {
       host: "0.0.0.0",
     },
     plugins: [react()],
-    define: {
-      "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),
-      "process.env.IMGBB_API_KEY": JSON.stringify(env.IMGBB_API_KEY || "d2a164a18ca7b393d6a27aefebb479da"),
-    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "."),
