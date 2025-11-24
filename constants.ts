@@ -34,7 +34,7 @@ export const PRESETS: PresetPrompt[] = [
   {
     id: "elvis",
     label: "Elvis Presley",
-    text: "Una foto vibrante y retro en Las Vegas. Todas las personas de la foto original posando con actitud rockera junto al legendario Elvis Presley. Elvis lleva su icónico traje blanco con cuello alto y lentejuelas, peinado pompadour y gafas de sol. Fondo con luces de neón brillantes y atmósfera de los años 70.",
+    text: "Una foto vibrante y retro en Las Vegas. Todas las personas de la foto original posando con actitud rockera MANTENIENDO LAS CARAS Y RASGOS ORIGINALES DE LAS PERSONAS junto al legendario Elvis Presley. Elvis lleva su icónico traje blanco con cuello alto y lentejuelas, peinado pompadour y gafas de sol. Fondo con luces de neón brillantes y atmósfera de los años 70.",
     icon: "🎸",
   },
   {
