@@ -1,72 +1,15 @@
 import React, { useState } from "react";
-import { ImageUploader } from "./components/ImageUploader";
-import { PromptSelector } from "./components/PromptSelector";
+import { AnimatePresence } from "framer-motion";
 import { generateEditedImageVariations } from "./services/geminiService";
-import { AppStatus, PresetPrompt, ART_STYLES } from "./types";
+import { AppStatus, ART_STYLES } from "./types";
 import { uploadToImgBB, generateQRCode } from "./services/qrService";
-
-const PRESETS: PresetPrompt[] = [
-  {
-    id: "messi",
-    label: "Con Messi",
-    text: "Una selfie de grupo donde TODAS las personas de la foto original aparecen junto a Lionel Messi. Messi se une al grupo como un amigo más. Si hay varias personas en la foto original, todas salen en la imagen final junto a Messi.",
-    icon: "⚽",
-  },
-  {
-    id: "taylor",
-    label: "Con Taylor Swift",
-    text: 'Una foto espectacular en el escenario del "Eras Tour". El grupo de personas de la foto original posando abrazados junto a Taylor Swift. Ella lleva un traje body brillante de lentejuelas (azul o rosa) y sostiene un micrófono. Iluminación de concierto, confeti y ambiente de fiesta pop.',
-    icon: "🎤",
-  },
-  {
-    id: "elvis",
-    label: "Elvis Presley",
-    text: "Una foto vibrante y retro en Las Vegas. El grupo de personas de la foto original posando con actitud rockera junto al legendario Elvis Presley. Elvis lleva su icónico traje blanco con cuello alto y lentejuelas, peinado pompadour y gafas de sol. Fondo con luces de neón brillantes y atmósfera de los años 70.",
-    icon: "🎸",
-  },
-  {
-    id: "trump",
-    label: "Con Trump",
-    text: "Una selfie de grupo épica donde TODAS las personas de la foto original aparecen posando junto a Donald Trump. Trump lleva su traje azul clásico y corbata roja, haciendo su gesto de pulgar arriba. Fondo elegante de la Casa Blanca.",
-    icon: "🇺🇸",
-  },
-  {
-    id: "harrypotter",
-    label: "Harry Potter",
-    text: "Una escena mágica dentro del castillo de Hogwarts. El grupo de personas original vistiendo túnicas de mago de Gryffindor, posando junto a Harry Potter (con la apariencia de Daniel Radcliffe en las películas). Sostienen varitas mágicas, velas flotantes en el techo, ambiente mágico y cinematográfico.",
-    icon: "⚡",
-  },
-  {
-    id: "vader",
-    label: "Darth Vader",
-    text: "Una foto épica de ciencia ficción dentro de los pasillos imperiales de la Estrella de la Muerte. El grupo original posa junto al imponente Darth Vader. Vader tiene su sable de luz rojo encendido. Iluminación dramática, contraste alto, atmósfera de Star Wars.",
-    icon: "🌌",
-  },
-  {
-    id: "wanted",
-    label: "Se Busca",
-    text: 'Un póster antiguo y desgastado de "SE BUSCA" (WANTED) del Lejano Oeste clavado en una pared de madera rústica. Las personas de la foto aparecen retratadas dentro del cartel con efecto sepia, textura de papel viejo, sombreros de vaquero y aspecto de forajidos.',
-    icon: "🤠",
-  },
-  {
-    id: "astronaut",
-    label: "Astronautas",
-    text: "Las personas de la foto original vestidas con trajes espaciales futuristas de alta tecnología, caminando sobre la superficie roja de Marte con la Tierra visible en el cielo estrellado de fondo.",
-    icon: "🚀",
-  },
-  {
-    id: "hollywood",
-    label: "Estrella de Cine",
-    text: "Caminando por la alfombra roja rodeado de paparazzis, vistiendo un traje de gala elegante.",
-    icon: "🎬",
-  },
-  {
-    id: "fantasy",
-    label: "Guerrero Medieval",
-    text: "Vistiendo una armadura plateada brillante y una capa roja, sosteniendo una espada en un paisaje de montaña épico.",
-    icon: "⚔️",
-  },
-];
+import { PRESETS } from "./constants";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { ProcessingOverlay } from "./components/ProcessingOverlay";
+import { ResultView } from "./components/ResultView";
+import { InputView } from "./components/InputView";
+import { QRModal } from "./components/QRModal";
 
 const App: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -208,254 +151,76 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white font-sans pb-20">
-      {/* Header */}
-      <div className="py-3 sm:py-6 text-center bg-black/30 backdrop-blur-lg border-b border-white/10 sticky top-0 z-30">
-        <h1 className="text-xl sm:text-3xl font-black tracking-wide sm:tracking-widest uppercase bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 px-2">
-          ✨ AI Photo Booth ✨
-        </h1>
-        <p className="text-xs sm:text-sm text-purple-300 mt-1 sm:mt-2 px-2">
-          Transforma tus fotos con IA
-        </p>
-      </div>
+      <Header />
 
       <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
-        {/* View: Success / Results */}
-        {status === AppStatus.SUCCESS ? (
-          <div className="flex flex-col space-y-4 sm:space-y-6 animate-fadeIn">
-            {/* Main Photo */}
-            <div className="flex flex-col items-center">
-              <h2 className="text-xl sm:text-3xl font-bold mb-3 sm:mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-pink-400">
-                ✨ Tu Foto Mágica ✨
-              </h2>
+        <AnimatePresence mode="wait">
+          {status === AppStatus.SUCCESS ? (
+            <ResultView
+              key="result"
+              generatedImages={generatedImages}
+              selectedImageIndex={selectedImageIndex}
+              setSelectedImageIndex={setSelectedImageIndex}
+              onDownload={handleDownload}
+              onGenerateQR={handleGenerateQR}
+              onReset={handleReset}
+            />
+          ) : (
+            <InputView
+              key="input"
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+              prompt={prompt}
+              setPrompt={setPrompt}
+              selectedStyleId={selectedStyleId}
+              setSelectedStyleId={setSelectedStyleId}
+              presets={PRESETS}
+              onGenerate={handleGenerate}
+              status={status}
+            />
+          )}
+        </AnimatePresence>
 
-              <div className="relative w-full max-w-3xl aspect-square sm:aspect-[4/3] bg-gradient-to-br from-purple-800/50 to-pink-800/50 rounded-xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-purple-500/50">
-                <img
-                  src={generatedImages[selectedImageIndex]}
-                  alt="Result"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </div>
-
-            {/* Variations */}
-            <div className="bg-black/30 backdrop-blur-lg rounded-xl sm:rounded-3xl p-3 sm:p-6 border border-purple-500/30">
-              <h3 className="text-sm sm:text-lg font-bold mb-3 sm:mb-4 text-purple-300 uppercase tracking-wider">
-                Variaciones
-              </h3>
-              <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                {generatedImages.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setSelectedImageIndex(idx)}
-                    className={`relative aspect-square sm:aspect-[4/3] rounded-lg sm:rounded-2xl overflow-hidden transition-all duration-300 ${
-                      selectedImageIndex === idx
-                        ? "ring-2 sm:ring-4 ring-pink-500 scale-105 shadow-xl sm:shadow-2xl shadow-pink-500/50"
-                        : "opacity-70 active:opacity-100"
-                    }`}
-                  >
-                    <img
-                      src={img}
-                      alt={`Variación ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="space-y-2 sm:space-y-3">
-              <button
-                onClick={handleDownload}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-blue-600 to-blue-500 active:from-blue-500 active:to-blue-400 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-xl shadow-lg active:scale-95 transition-all"
-              >
-                <span className="text-xl sm:text-2xl">⬇️</span>
-                DESCARGAR IMAGEN
-              </button>
-
-              <button
-                onClick={handleGenerateQR}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-r from-green-600 to-green-500 active:from-green-500 active:to-green-400 py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-xl shadow-lg active:scale-95 transition-all"
-              >
-                <span className="text-xl sm:text-2xl">📱</span>
-                CÓDIGO QR
-              </button>
-
-              <button
-                onClick={handleReset}
-                className="w-full flex items-center justify-center gap-2 sm:gap-3 bg-white/10 active:bg-white/20 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-lg shadow-lg active:scale-95 transition-all border border-white/20"
-              >
-                <span className="text-lg sm:text-xl">🔄</span>
-                Nueva Foto
-              </button>
-            </div>
-          </div>
-        ) : (
-          /* View: Input */
-          <div className="space-y-4 sm:space-y-6">
-            {/* Image Upload */}
-            <div className="bg-black/30 backdrop-blur-lg p-3 sm:p-6 rounded-xl sm:rounded-3xl border border-purple-500/30 shadow-xl">
-              <ImageUploader
-                onImageSelected={setSelectedFile}
-                selectedImage={selectedFile}
-              />
-            </div>
-
-            {/* Options */}
-            <div
-              className={`transition-all duration-500 ${
-                selectedFile
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-50 pointer-events-none grayscale"
-              }`}
-            >
-              <div className="bg-black/30 backdrop-blur-lg p-3 sm:p-6 rounded-xl sm:rounded-3xl border border-purple-500/30 shadow-xl">
-                <PromptSelector
-                  prompt={prompt}
-                  setPrompt={setPrompt}
-                  selectedStyleId={selectedStyleId}
-                  setSelectedStyleId={setSelectedStyleId}
-                  presets={PRESETS}
-                />
-
-                <button
-                  onClick={handleGenerate}
-                  disabled={
-                    !selectedFile || !prompt || status === AppStatus.PROCESSING
-                  }
-                  className={`
-                      w-full mt-4 sm:mt-8 py-4 sm:py-6 rounded-xl sm:rounded-2xl font-black text-lg sm:text-2xl shadow-2xl uppercase tracking-wider transition-all
-                      ${
-                        status === AppStatus.PROCESSING
-                          ? "bg-purple-900/50 text-purple-300 cursor-wait"
-                          : "bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 active:scale-[0.98] text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                      }
-                    `}
-                >
-                  {status === AppStatus.PROCESSING
-                    ? "✨ Creando Magia..."
-                    : "🎨 GENERAR IMAGEN"}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Processing Overlay */}
-        {status === AppStatus.PROCESSING && (
-          <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center text-center p-4 sm:p-8">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 border-t-4 border-l-4 border-pink-500 rounded-full animate-spin mb-6 sm:mb-8"></div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4 animate-pulse px-4">
-              ✨ Procesando...
-            </h2>
-            <p className="text-base sm:text-xl text-purple-300 mb-2 px-4">
-              La IA está creando tu imagen mágica
-            </p>
-            <p className="text-xs sm:text-sm text-gray-400 px-4">
-              Esto puede tomar 15-30 segundos...
-            </p>
-          </div>
-        )}
+        <AnimatePresence>
+          {status === AppStatus.PROCESSING && <ProcessingOverlay />}
+        </AnimatePresence>
 
         {/* Error Toast */}
-        {status === AppStatus.ERROR && errorMessage && (
-          <div className="fixed bottom-20 sm:bottom-24 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 z-50 sm:max-w-md animate-fadeIn">
-            <div className="bg-red-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-2xl border border-red-500">
-              <div className="flex items-start gap-2 sm:gap-3">
-                <span className="text-xl sm:text-2xl">⚠️</span>
-                <div className="flex-1">
-                  <p className="font-bold mb-1 text-sm sm:text-base">Error</p>
-                  <p className="text-xs sm:text-sm">{errorMessage}</p>
+        <AnimatePresence>
+          {status === AppStatus.ERROR && errorMessage && (
+            <div className="fixed bottom-20 sm:bottom-24 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 z-50 sm:max-w-md animate-fadeIn">
+              <div className="bg-red-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl shadow-2xl border border-red-500">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <span className="text-xl sm:text-2xl">⚠️</span>
+                  <div className="flex-1">
+                    <p className="font-bold mb-1 text-sm sm:text-base">Error</p>
+                    <p className="text-xs sm:text-sm">{errorMessage}</p>
+                  </div>
+                  <button
+                    onClick={() => setStatus(AppStatus.IDLE)}
+                    className="text-white/80 hover:text-white text-xl font-bold"
+                  >
+                    ×
+                  </button>
                 </div>
-                <button
-                  onClick={() => setStatus(AppStatus.IDLE)}
-                  className="text-white/80 active:text-white text-xl font-bold"
-                >
-                  ×
-                </button>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
 
-        {/* QR Modal */}
-        {showQRModal && (
-          <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex items-center justify-center p-4 sm:p-8">
-            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 max-w-md w-full relative animate-fadeIn">
-              <button
-                onClick={() => setShowQRModal(false)}
-                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-gray-500 active:text-gray-700 text-3xl font-bold"
-              >
-                ×
-              </button>
-
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
-                📱 Escanea para descargar
-              </h2>
-
-              {isUploadingQR ? (
-                <div className="flex flex-col items-center justify-center py-12">
-                  <div className="w-16 h-16 border-t-4 border-purple-600 rounded-full animate-spin mb-4"></div>
-                  <p className="text-gray-600">Subiendo foto...</p>
-                </div>
-              ) : qrCodeUrl ? (
-                <>
-                  <div className="bg-gray-50 p-4 rounded-2xl shadow-inner mb-4">
-                    <img
-                      src={qrCodeUrl}
-                      alt="Código QR"
-                      className="w-full h-auto"
-                    />
-                  </div>
-
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
-                    <p className="text-green-800 text-sm font-semibold mb-2">
-                      ✅ ¡Listo!
-                    </p>
-                    <p className="text-gray-600 text-xs">
-                      Escanea el QR con tu celular para descargar la foto
-                    </p>
-                  </div>
-
-                  {downloadUrl && (
-                    <p className="text-xs text-gray-400 mb-4 break-all">
-                      Link: {downloadUrl}
-                    </p>
-                  )}
-                </>
-              ) : (
-                <div className="py-12">
-                  <p className="text-red-600">Error generando el código QR</p>
-                </div>
-              )}
-
-              <button
-                onClick={() => setShowQRModal(false)}
-                className="w-full bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-xl font-bold transition-all"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        )}
+        <QRModal
+          show={showQRModal}
+          onClose={() => setShowQRModal(false)}
+          isUploading={isUploadingQR}
+          qrCodeUrl={qrCodeUrl}
+          downloadUrl={downloadUrl}
+        />
       </main>
 
-      {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 py-2 sm:py-3 text-white text-center shadow-lg z-20">
-        <div className="flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium px-2">
-          <span>Hecho con amor</span>
-          <span
-            className="text-red-200 inline-block"
-            style={{ animation: "pulse 1s ease-in-out infinite" }}
-          >
-            ❤️
-          </span>
-          <span>por</span>
-          <span className="font-bold">Mate Code</span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
 
 export default App;
+
