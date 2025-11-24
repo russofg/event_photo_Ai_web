@@ -2,6 +2,24 @@ import { PresetPrompt } from "./types";
 
 export const PRESETS: PresetPrompt[] = [
   {
+    id: "linkedin",
+    label: "LinkedIn Pro",
+    text: "Una foto de perfil profesional de alta calidad. La persona viste traje de negocios elegante (o ropa formal moderna), iluminación de estudio suave, fondo de oficina moderna desenfocado (bokeh). Expresión de confianza y liderazgo. Estilo fotografía corporativa premium.",
+    icon: "👔",
+  },
+  {
+    id: "christmas",
+    label: "Navidad Mágica",
+    text: "El grupo de personas celebrando la Navidad en una sala decorada con un árbol gigante iluminado, chimenea acogedora y regalos. Visten suéteres navideños o ropa elegante de invierno. Nieve cayendo por la ventana, ambiente cálido y festivo.",
+    icon: "🎄",
+  },
+  {
+    id: "newyear",
+    label: "Año Nuevo",
+    text: "El grupo de personas celebrando el Año Nuevo en Times Square con fuegos artificiales espectaculares de fondo. Confeti, luces brillantes, copas de champagne, ambiente de fiesta eufórica. Ropa de fiesta elegante y brillante.",
+    icon: "🎆",
+  },
+  {
     id: "messi",
     label: "Con Messi",
     text: "Una selfie donde TODAS las personas de la foto original aparecen junto a Lionel Messi. Messi se une al grupo como un amigo más. Si hay varias personas en la foto original, todas salen en la imagen final junto a Messi.",
@@ -60,5 +78,108 @@ export const PRESETS: PresetPrompt[] = [
     label: "Guerrero Medieval",
     text: "Vistiendo una armadura plateada brillante y una capa roja, sosteniendo una espada en un paisaje de montaña épico.",
     icon: "⚔️",
+  },
+  {
+    id: "barbie",
+    label: "Mundo Barbie",
+    text: "El grupo de personas posando dentro de una caja de muñeca Barbie de tamaño real. MANTENIENDO LAS CARAS Y RASGOS ORIGINALES DE LAS PERSONAS. Fondo rosa brillante, estética plástica, logotipos de Barbie. Las personas visten ropa colorida y fashionista pero conservan su identidad facial exacta.",
+    icon: "🎀",
+  },
+  {
+    id: "throne",
+    label: "Trono de Hierro",
+    text: "El grupo de personas posando con actitud poderosa en el Trono de Hierro de Game of Thrones. Iluminación dramática, espadas, ambiente medieval oscuro y épico. Vestimenta con capas de piel y armaduras sutiles.",
+    icon: "⚔️",
+  },
+
+  {
+    id: "jurassic",
+    label: "Jurassic Park",
+    text: "Una foto de acción dinámica donde el grupo de personas está huyendo o escondiéndose de un T-Rex gigante en la selva de Jurassic Park. Lluvia, barro, vegetación tropical densa y un jeep del parque volcado en el fondo.",
+    icon: "🦖",
+  },
+  {
+    id: "simpsons",
+    label: "Los Simpsons",
+    text: "El grupo de personas sentadas en el sofá de la familia Simpson frente al televisor. Estilo de animación cartoon 2D, piel amarilla, ojos grandes, fondo de la sala de estar de los Simpsons con las paredes rosas.",
+    icon: "🍩",
+  },
+  {
+    id: "magazine",
+    label: "Portada de Revista",
+    text: "El grupo de personas en la portada de una revista de moda famosa (estilo Vogue o Time). Tipografía elegante con el nombre de la revista, titulares sobre el éxito del grupo, iluminación de estudio profesional, poses de modelo.",
+    icon: "📰",
+  },
+  {
+    id: "jet",
+    label: "Jet Privado",
+    text: "Las personas de la foto original (SOLAS, sin nadie más) brindando con champagne dentro de un lujoso jet privado. Asientos de cuero beige, ventanillas con vista a las nubes, interior dorado y elegante, actitud de millonarios exitosos.",
+    icon: "✈️",
+  },
+  {
+    id: "metgala",
+    label: "Met Gala",
+    text: "Las personas de la foto original posando en las escaleras del Museo Metropolitano de Arte durante la Met Gala. Vestidos y trajes extravagantes de alta costura, alfombra roja, cientos de fotógrafos con flashes disparando en el fondo.",
+    icon: "👗",
+  },
+  {
+    id: "paparazzi",
+    label: "Paparazzi",
+    text: "El grupo de personas caminando por la calle de noche, cubriéndose de los flashes de docenas de paparazzis que los rodean. Estilo foto robada de celebridades, luces intensas, caos y glamour.",
+    icon: "📸",
+  },
+  {
+    id: "paris",
+    label: "Torre Eiffel",
+    text: "El grupo de personas disfrutando de un picnic elegante con vino y quesos en el Campo de Marte, con la Torre Eiffel de fondo en un día soleado de primavera. Estilo romántico y parisino.",
+    icon: "🗼",
+  },
+  {
+    id: "beach",
+    label: "Playa Paradisíaca",
+    text: "El grupo de personas relajándose en una playa de arena blanca y agua turquesa cristalina en las Maldivas. Cócteles tropicales en mano, palmeras, atardecer dorado perfecto.",
+    icon: "🏖️",
+  },
+  {
+    id: "underwater",
+    label: "Bajo el Mar",
+    text: "Las personas de la foto original (SOLAS, sin nadie más) respirando bajo el agua en un arrecife de coral vibrante. Estilo película de Aquaman o La Sirenita. Peces de colores, iluminación subacuática mágica, burbujas y cabello flotando.",
+    icon: "🧜‍♀️",
+  },
+  {
+    id: "everest",
+    label: "Cima del Everest",
+    text: "Las personas de la foto original (SOLAS, sin nadie más) en la cima del Monte Everest. MANTENIENDO LA CARA Y RASGOS EXACTOS. Nieve, banderas de oración, cielo azul profundo, vista de montañas infinitas. Ropa de alpinismo de alta tecnología.",
+    icon: "🏔️",
+  },
+  {
+    id: "disco",
+    label: "Disco 80s",
+    text: "El grupo de personas bailando en una pista de baile iluminada estilo Fiebre de Sábado por la Noche. Bola de espejos, luces de neón, humo, ropa retro de los 80s con lentejuelas y pantalones acampanados.",
+    icon: "🕺",
+  },
+  {
+    id: "gatsby",
+    label: "Años 20",
+    text: "El grupo de personas en una fiesta lujosa estilo El Gran Gatsby. Trajes de esmoquin, vestidos con flecos y plumas, copas de champagne, decoración Art Déco dorada y negra, ambiente festivo y elegante.",
+    icon: "🥂",
+  },
+  {
+    id: "vikings",
+    label: "Vikingos",
+    text: "El grupo de personas navegando en un barco drakkar vikingo en un fiordo noruego. Vestimenta de pieles y cuero, escudos de madera, cascos (sin cuernos), mar agitado y niebla.",
+    icon: "🛡️",
+  },
+  {
+    id: "zombie",
+    label: "Apocalipsis Zombie",
+    text: "El grupo de personas como sobrevivientes en una ciudad post-apocalíptica destruida. Ropa desgastada, armas improvisadas, hordas de zombies borrosos en el fondo, ambiente tenso y cinematográfico.",
+    icon: "🧟",
+  },
+  {
+    id: "alien",
+    label: "Abducción",
+    text: "El grupo de personas siendo elevado por un rayo de luz azul brillante hacia un platillo volador gigante en el cielo nocturno. Expresiones de sorpresa, vacas volando en el fondo, estilo película de ciencia ficción de los 50.",
+    icon: "🛸",
   },
 ];

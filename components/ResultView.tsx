@@ -35,16 +35,26 @@ export const ResultView: React.FC<ResultViewProps> = ({
 
         <div className="relative w-full max-w-3xl aspect-square sm:aspect-[4/3] bg-gradient-to-br from-purple-800/50 to-pink-800/50 rounded-xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-purple-500/50">
           <AnimatePresence mode="wait">
-            <motion.img
+            <motion.div
               key={selectedImageIndex}
-              src={generatedImages[selectedImageIndex]}
-              alt="Result"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, scale: 0.9, filter: "brightness(2)" }}
+              animate={{ opacity: 1, scale: 1, filter: "brightness(1)" }}
               exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 0.3 }}
-              className="w-full h-full object-contain"
-            />
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="w-full h-full relative"
+            >
+              <motion.div
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="absolute inset-0 bg-white z-10 pointer-events-none mix-blend-overlay"
+              />
+              <img
+                src={generatedImages[selectedImageIndex]}
+                alt="Result"
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>

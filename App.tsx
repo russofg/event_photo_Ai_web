@@ -10,8 +10,14 @@ import { ProcessingOverlay } from "./components/ProcessingOverlay";
 import { ResultView } from "./components/ResultView";
 import { InputView } from "./components/InputView";
 import { QRModal } from "./components/QRModal";
+import { checkUsageLimit, incrementUsage } from "./services/usageService";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { Login } from "./components/Login";
+import { LogOut } from "lucide-react";
+import confetti from "canvas-confetti";
 
-const App: React.FC = () => {
+const MainApp: React.FC = () => {
+  const { user, logout } = useAuth();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [prompt, setPrompt] = useState<string>("");
   const [selectedStyleId, setSelectedStyleId] = useState<string>(
@@ -27,16 +33,76 @@ const App: React.FC = () => {
   const [isUploadingQR, setIsUploadingQR] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
 
+  // Trigger confetti on success
+  React.useEffect(() => {
+    if (status === AppStatus.SUCCESS) {
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+      const randomInRange = (min: number, max: number) => {
+        return Math.random() * (max - min) + min;
+      };
+
+      const interval: any = setInterval(function () {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        // since particles fall down, start a bit higher than random
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+        });
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+        });
+      }, 250);
+
+      return () => clearInterval(interval);
+    }
+  }, [status]);
+
   const handleGenerate = async () => {
     if (!selectedFile || !prompt) {
       console.log("Faltan datos: archivo o prompt");
       return;
     }
 
+    if (!user) {
+      setErrorMessage("Debes iniciar sesión para generar imágenes.");
+      setStatus(AppStatus.ERROR);
+      return;
+    }
+
+    // Check usage limit
+    try {
+      const { allowed, remaining } = await checkUsageLimit(user.uid);
+      if (!allowed) {
+        setErrorMessage(
+          "Has alcanzado tu límite diario de 15 imágenes. ¡Vuelve mañana!"
+        );
+        setStatus(AppStatus.ERROR);
+        return;
+      }
+      console.log(`Generaciones restantes hoy: ${remaining}`);
+    } catch (error) {
+      console.error("Error verificando límite:", error);
+      // Optional: Allow generation if check fails, or block it. 
+      // Blocking is safer for cost control.
+      setErrorMessage("Error verificando tu cuenta. Intenta nuevamente.");
+      setStatus(AppStatus.ERROR);
+      return;
+    }
+
     console.log("🚀 Iniciando generación...");
-    console.log("Archivo:", selectedFile.name, selectedFile.type);
-    console.log("Prompt:", prompt);
-    console.log("Estilo:", selectedStyleId);
+    // ... existing logs
 
     setStatus(AppStatus.PROCESSING);
     setErrorMessage(null);
@@ -57,12 +123,17 @@ const App: React.FC = () => {
         setGeneratedImages(results);
         setStatus(AppStatus.SUCCESS);
         console.log("🎉 Imágenes generadas correctamente");
+        
+        // Increment usage count on success
+        await incrementUsage(user.uid);
       } else {
+        // ... existing error handling
         console.error("❌ No se generaron imágenes");
         setErrorMessage("No pudimos generar la imagen. Intenta otra vez.");
         setStatus(AppStatus.ERROR);
       }
     } catch (error: any) {
+      // ... existing error handling
       console.error("❌ ERROR COMPLETO:", error);
       console.error("Tipo de error:", error?.constructor?.name);
       console.error("Mensaje:", error?.message);
@@ -150,10 +221,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white font-sans pb-20">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 animate-gradient-x text-white font-sans flex flex-col pb-24">
+      <Header user={user} logout={logout} />
 
-      <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
+      <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-grow w-full">
         <AnimatePresence mode="wait">
           {status === AppStatus.SUCCESS ? (
             <ResultView
@@ -222,5 +293,28 @@ const App: React.FC = () => {
   );
 };
 
+const AppContent: React.FC = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-12 h-12 border-t-4 border-purple-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  return user ? <MainApp /> : <Login />;
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+};
+
 export default App;
+
 
